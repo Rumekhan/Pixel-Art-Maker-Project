@@ -1,25 +1,34 @@
-
-var row, columnn, colour;
-$('#sizePicker').submit((event) => {
-    event.preventDefault();
-    var column = $('#inputHeight').val();
-    var row = $('#inputWidth').val();
-    makeGrid(column, row);
-    })
+// Variable controlling color, height and width grid
+const height = document.getElementById("inputHeight");
+const color = document.getElementById("colorPicker")
+let currentColor = color.value;
+const tableRow = document.getElementById("pixelCanvas");
+const submitButton = document.getElementById("sizePicker");
+const width = document.getElementById("inputWidth");
+//Event Listeners
+submitButton.addEventListener("submit", submit);
+tableRow.addEventListener("click", addColor);
+//Function for functionality of submit button
+function submit(e) {
+ e.preventDefault();
+  makeGrid(height.value, width.value);
+}
 function makeGrid(x, y) {
-    $('tr').remove();
-    for (var i = 1; i<=x; i++) {
-        $('#pixelCanvas').append('<tr id=table' + i + '></tr>');
-        for (var j = 1; j<=y; j++){
-            $('#table' + i).append('<td></td>');
-        }    
+  tableRow.innerHTML = "";
+  for (let i = 0; i < x; i++) {
+    const row = tableRow.appendChild(document.createElement("tr"));
+    for (let j = 0; j < y; j++) {
+      const col = document.createElement("td");
+      col.id = "table";
+      row.appendChild(col);
     }
-    $('td').click(function addColor() {
-        colour=$('#colorPicker').val();
-        if ($(this).attr('style')) {
-            $(this).removeAttr('style')
-        }else {
-            $(this).attr('style', 'background-color:' + colour);
-        }
-    }) 
+  }
+}
+color.onchange = function() {
+  currentColor = this.value;
+}
+function addColor(event){
+  if (event.target.nodeName.toLowerCase() === 'td') {
+    event.target.style.backgroundColor = currentColor;
+  }
 }
